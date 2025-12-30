@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen-Politician Connect</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-role {
+            background-color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 1rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .page-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .card p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .card .count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+        
+        /* Forms */
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Issues List */
+        .issues-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .issue-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .issue-item:last-child {
+            border-bottom: none;
+        }
+        
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .issue-title {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .issue-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-in-progress {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .issue-meta {
+            display: flex;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .issue-meta span {
+            margin-right: 1rem;
+        }
+        
+        .issue-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--secondary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 0.5rem;
+            }
+            
+            .user-info {
+                margin-top: 1rem;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .issue-header {
+                flex-direction: column;
+            }
+            
+            .issue-status {
+                align-self: flex-start;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">Citizen-Politician Connect</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                <li><a href="#" class="nav-link" data-page="issues">Report Issue</a></li>
+                <li><a href="#" class="nav-link" data-page="feedback">Feedback</a></li>
+                <li><a href="#" class="nav-link" data-page="updates">Updates</a></li>
+                <li><a href="#" class="nav-link" data-page="discussions">Discussions</a></li>
+            </ul>
+            <div class="user-info">
+                <span class="user-role" id="user-role">Citizen</span>
+                <button id="login-btn" class="btn">Login</button>
+                <button id="logout-btn" class="btn" style="display: none;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active">
+                <h1 class="page-title">Dashboard</h1>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3>Reported Issues</h3>
+                        <p>Total issues submitted by citizens</p>
+                        <div class="count" id="issues-count">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Resolved Issues</h3>
+                        <p>Issues that have been addressed</p>
+                        <div class="count" id="resolved-count">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Pending Feedback</h3>
+                        <p>Feedback awaiting response</p>
+                        <div class="count" id="feedback-count">0</div>
+                    </div>
+                    <div class="card">
+                        <h3>Recent Updates</h3>
+                        <p>Updates from politicians</p>
+                        <div class="count" id="updates-count">0</div>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="recent-issues">Recent Issues</div>
+                    <div class="tab" data-tab="recent-updates">Recent Updates</div>
+                    <div class="tab" data-tab="recent-feedback">Recent Feedback</div>
+                </div>
+                
+                <div class="tab-content active" id="recent-issues">
+                    <div class="issues-list">
+                        <!-- Recent issues will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="recent-updates">
+                    <div class="issues-list">
+                        <!-- Recent updates will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="recent-feedback">
+                    <div class="issues-list">
+                        <!-- Recent feedback will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Report Issue Page -->
+            <div id="issues" class="page">
+                <h1 class="page-title">Report an Issue</h1>
+                
+                <div class="form-container">
+                    <form id="issue-form">
+                        <div class="form-group">
+                            <label for="issue-title">Issue Title</label>
+                            <input type="text" id="issue-title" class="form-control" placeholder="Brief description of the issue" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="issue-category">Category</label>
+                            <select id="issue-category" class="form-control" required>
+                                <option value="">Select a category</option>
+                                <option value="infrastructure">Infrastructure</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="education">Education</option>
+                                <option value="environment">Environment</option>
+                                <option value="safety">Public Safety</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="issue-location">Location</label>
+                            <input type="text" id="issue-location" class="form-control" placeholder="Where is this issue located?" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="issue-description">Description</label>
+                            <textarea id="issue-description" class="form-control" placeholder="Please provide detailed information about the issue" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="issue-priority">Priority</label>
+                            <select id="issue-priority" class="form-control" required>
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn">Submit Issue</button>
+                    </form>
+                </div>
+                
+                <h2 class="page-title">My Reported Issues</h2>
+                <div class="issues-list" id="my-issues">
+                    <!-- User's issues will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Feedback Page -->
+            <div id="feedback" class="page">
+                <h1 class="page-title">Provide Feedback</h1>
+                
+                <div class="form-container">
+                    <form id="feedback-form">
+                        <div class="form-group">
+                            <label for="feedback-type">Feedback Type</label>
+                            <select id="feedback-type" class="form-control" required>
+                                <option value="">Select feedback type</option>
+                                <option value="suggestion">Suggestion</option>
+                                <option value="complaint">Complaint</option>
+                                <option value="appreciation">Appreciation</option>
+                                <option value="question">Question</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback-recipient">Recipient (Optional)</label>
+                            <select id="feedback-recipient" class="form-control">
+                                <option value="">General Feedback</option>
+                                <option value="mayor">Mayor</option>
+                                <option value="council-member">Council Member</option>
+                                <option value="representative">Representative</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback-subject">Subject</label>
+                            <input type="text" id="feedback-subject" class="form-control" placeholder="Brief subject of your feedback" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback-message">Message</label>
+                            <textarea id="feedback-message" class="form-control" placeholder="Please provide your detailed feedback" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Submit Feedback</button>
+                    </form>
+                </div>
+                
+                <h2 class="page-title">My Feedback</h2>
+                <div class="issues-list" id="my-feedback">
+                    <!-- User's feedback will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Updates Page -->
+            <div id="updates" class="page">
+                <h1 class="page-title">Updates from Politicians</h1>
+                
+                <div class="issues-list" id="updates-list">
+                    <!-- Updates will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Discussions Page -->
+            <div id="discussions" class="page">
+                <h1 class="page-title">Community Discussions</h1>
+                
+                <div class="form-container">
+                    <form id="discussion-form">
+                        <div class="form-group">
+                            <label for="discussion-topic">Discussion Topic</label>
+                            <input type="text" id="discussion-topic" class="form-control" placeholder="What would you like to discuss?" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="discussion-content">Discussion Content</label>
+                            <textarea id="discussion-content" class="form-control" placeholder="Start the discussion..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Start Discussion</button>
+                    </form>
+                </div>
+                
+                <div class="issues-list" id="discussions-list">
+                    <!-- Discussions will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Citizen-Politician Connect. All rights reserved.</p>
+            <p>Promoting transparency and responsive governance.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to Your Account</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-role">Select Role</label>
+                    <select id="login-role" class="form-control" required>
+                        <option value="">Select your role</option>
+                        <option value="citizen">Citizen</option>
+                        <option value="politician">Politician</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" class="form-control" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            currentUser: null,
+            currentRole: 'citizen',
+            issues: [],
+            feedback: [],
+            updates: [],
+            discussions: []
+        };
+
+        // DOM Elements
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginModal = document.getElementById('login-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const loginForm = document.getElementById('login-form');
+        const userRole = document.getElementById('user-role');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const issueForm = document.getElementById('issue-form');
+        const feedbackForm = document.getElementById('feedback-form');
+        const discussionForm = document.getElementById('discussion-form');
+
+        // Initialize the application
+        function init() {
+            // Load sample data
+            loadSampleData();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Update UI based on current state
+            updateUI();
+        }
+
+        // Load sample data for demonstration
+        function loadSampleData() {
+            state.issues = [
+                {
+                    id: 1,
+                    title: 'Potholes on Main Street',
+                    category: 'infrastructure',
+                    location: 'Main Street between 1st and 3rd Ave',
+                    description: 'Multiple large potholes causing damage to vehicles and creating safety hazards for cyclists.',
+                    priority: 'high',
+                    status: 'pending',
+                    date: '2023-10-15',
+                    user: 'citizen123'
+                },
+                {
+                    id: 2,
+                    title: 'Broken playground equipment',
+                    category: 'infrastructure',
+                    location: 'Central Park',
+                    description: 'The swing set in the children\'s playground is broken and poses a safety risk.',
+                    priority: 'medium',
+                    status: 'in-progress',
+                    date: '2023-10-10',
+                    user: 'citizen456'
+                },
+                {
+                    id: 3,
+                    title: 'Street light outage',
+                    category: 'infrastructure',
+                    location: 'Oak Avenue',
+                    description: 'Multiple street lights are not working on Oak Avenue, making it unsafe at night.',
+                    priority: 'medium',
+                    status: 'resolved',
+                    date: '2023-10-05',
+                    user: 'citizen789'
+                }
+            ];
+
+            state.feedback = [
+                {
+                    id: 1,
+                    type: 'suggestion',
+                    recipient: 'mayor',
+                    subject: 'Weekly recycling pickup',
+                    message: 'I suggest implementing weekly recycling pickup instead of bi-weekly to reduce overflow.',
+                    date: '2023-10-12',
+                    user: 'citizen123'
+                },
+                {
+                    id: 2,
+                    type: 'complaint',
+                    recipient: 'council-member',
+                    subject: 'Noise from construction',
+                    message: 'Construction noise early in the morning is disturbing residents. Please enforce noise regulations.',
+                    date: '2023-10-08',
+                    user: 'citizen456'
+                }
+            ];
+
+            state.updates = [
+                {
+                    id: 1,
+                    title: 'New Community Center Opening',
+                    content: 'I\'m excited to announce the opening of our new community center next month. It will offer various programs for all age groups.',
+                    author: 'Mayor Johnson',
+                    date: '2023-10-18'
+                },
+                {
+                    id: 2,
+                    title: 'Road Repair Schedule',
+                    content: 'The public works department has scheduled road repairs for the following areas next week: Main St, Oak Ave, and Pine Blvd.',
+                    author: 'Council Member Davis',
+                    date: '2023-10-14'
+                }
+            ];
+
+            state.discussions = [
+                {
+                    id: 1,
+                    topic: 'Public transportation improvements',
+                    content: 'What improvements would you like to see in our public transportation system?',
+                    user: 'citizen123',
+                    date: '2023-10-16',
+                    replies: [
+                        { user: 'citizen456', content: 'More frequent bus service during peak hours would be helpful.', date: '2023-10-17' },
+                        { user: 'citizen789', content: 'I\'d like to see better connectivity between different transit modes.', date: '2023-10-17' }
+                    ]
+                }
+            ];
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Login button
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                loginModal.style.display = 'none';
+            });
+
+            // Login form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const role = document.getElementById('login-role').value;
+                const username = document.getElementById('login-username').value;
+                
+                if (role && username) {
+                    state.currentUser = username;
+                    state.currentRole = role;
+                    loginModal.style.display = 'none';
+                    updateUI();
+                }
+            });
+
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                state.currentUser = null;
+                state.currentRole = 'citizen';
+                updateUI();
+            });
+
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    showPage(pageId);
+                    
+                    // Update active nav link
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Issue form submission
+            issueForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!state.currentUser) {
+                    alert('Please login to report an issue');
+                    return;
+                }
+                
+                const title = document.getElementById('issue-title').value;
+                const category = document.getElementById('issue-category').value;
+                const location = document.getElementById('issue-location').value;
+                const description = document.getElementById('issue-description').value;
+                const priority = document.getElementById('issue-priority').value;
+                
+                const newIssue = {
+                    id: state.issues.length + 1,
+                    title,
+                    category,
+                    location,
+                    description,
+                    priority,
+                    status: 'pending',
+                    date: new Date().toISOString().split('T')[0],
+                    user: state.currentUser
+                };
+                
+                state.issues.unshift(newIssue);
+                issueForm.reset();
+                updateUI();
+                alert('Issue submitted successfully!');
+            });
+
+            // Feedback form submission
+            feedbackForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!state.currentUser) {
+                    alert('Please login to provide feedback');
+                    return;
+                }
+                
+                const type = document.getElementById('feedback-type').value;
+                const recipient = document.getElementById('feedback-recipient').value;
+                const subject = document.getElementById('feedback-subject').value;
+                const message = document.getElementById('feedback-message').value;
+                
+                const newFeedback = {
+                    id: state.feedback.length + 1,
+                    type,
+                    recipient,
+                    subject,
+                    message,
+                    date: new Date().toISOString().split('T')[0],
+                    user: state.currentUser
+                };
+                
+                state.feedback.unshift(newFeedback);
+                feedbackForm.reset();
+                updateUI();
+                alert('Feedback submitted successfully!');
+            });
+
+            // Discussion form submission
+            discussionForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!state.currentUser) {
+                    alert('Please login to start a discussion');
+                    return;
+                }
+                
+                const topic = document.getElementById('discussion-topic').value;
+                const content = document.getElementById('discussion-content').value;
+                
+                const newDiscussion = {
+                    id: state.discussions.length + 1,
+                    topic,
+                    content,
+                    user: state.currentUser,
+                    date: new Date().toISOString().split('T')[0],
+                    replies: []
+                };
+                
+                state.discussions.unshift(newDiscussion);
+                discussionForm.reset();
+                updateUI();
+                alert('Discussion started successfully!');
+            });
+        }
+
+        // Update UI based on current state
+        function updateUI() {
+            // Update user info
+            if (state.currentUser) {
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                userRole.textContent = state.currentRole.charAt(0).toUpperCase() + state.currentRole.slice(1);
+            } else {
+                loginBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+                userRole.textContent = 'Citizen';
+            }
+
+            // Update dashboard counts
+            document.getElementById('issues-count').textContent = state.issues.length;
+            document.getElementById('resolved-count').textContent = state.issues.filter(issue => issue.status === 'resolved').length;
+            document.getElementById('feedback-count').textContent = state.feedback.length;
+            document.getElementById('updates-count').textContent = state.updates.length;
+
+            // Update recent issues
+            const recentIssuesContainer = document.querySelector('#recent-issues .issues-list');
+            recentIssuesContainer.innerHTML = '';
+            
+            const recentIssues = state.issues.slice(0, 5);
+            recentIssues.forEach(issue => {
+                const issueElement = createIssueElement(issue);
+                recentIssuesContainer.appendChild(issueElement);
+            });
+
+            // Update recent updates
+            const recentUpdatesContainer = document.querySelector('#recent-updates .issues-list');
+            recentUpdatesContainer.innerHTML = '';
+            
+            const recentUpdates = state.updates.slice(0, 5);
+            recentUpdates.forEach(update => {
+                const updateElement = createUpdateElement(update);
+                recentUpdatesContainer.appendChild(updateElement);
+            });
+
+            // Update recent feedback
+            const recentFeedbackContainer = document.querySelector('#recent-feedback .issues-list');
+            recentFeedbackContainer.innerHTML = '';
+            
+            const recentFeedback = state.feedback.slice(0, 5);
+            recentFeedback.forEach(feedback => {
+                const feedbackElement = createFeedbackElement(feedback);
+                recentFeedbackContainer.appendChild(feedbackElement);
+            });
+
+            // Update my issues
+            const myIssuesContainer = document.getElementById('my-issues');
+            myIssuesContainer.innerHTML = '';
+            
+            const myIssues = state.currentUser ? 
+                state.issues.filter(issue => issue.user === state.currentUser) : [];
+            
+            if (myIssues.length === 0) {
+                myIssuesContainer.innerHTML = '<div class="issue-item"><p>No issues reported yet.</p></div>';
+            } else {
+                myIssues.forEach(issue => {
+                    const issueElement = createIssueElement(issue);
+                    myIssuesContainer.appendChild(issueElement);
+                });
+            }
+
+            // Update my feedback
+            const myFeedbackContainer = document.getElementById('my-feedback');
+            myFeedbackContainer.innerHTML = '';
+            
+            const myFeedback = state.currentUser ? 
+                state.feedback.filter(feedback => feedback.user === state.currentUser) : [];
+            
+            if (myFeedback.length === 0) {
+                myFeedbackContainer.innerHTML = '<div class="issue-item"><p>No feedback submitted yet.</p></div>';
+            } else {
+                myFeedback.forEach(feedback => {
+                    const feedbackElement = createFeedbackElement(feedback);
+                    myFeedbackContainer.appendChild(feedbackElement);
+                });
+            }
+
+            // Update updates list
+            const updatesListContainer = document.getElementById('updates-list');
+            updatesListContainer.innerHTML = '';
+            
+            state.updates.forEach(update => {
+                const updateElement = createUpdateElement(update);
+                updatesListContainer.appendChild(updateElement);
+            });
+
+            // Update discussions list
+            const discussionsListContainer = document.getElementById('discussions-list');
+            discussionsListContainer.innerHTML = '';
+            
+            state.discussions.forEach(discussion => {
+                const discussionElement = createDiscussionElement(discussion);
+                discussionsListContainer.appendChild(discussionElement);
+            });
+        }
+
+        // Create issue element
+        function createIssueElement(issue) {
+            const issueElement = document.createElement('div');
+            issueElement.className = 'issue-item';
+            
+            let statusClass = '';
+            switch(issue.status) {
+                case 'pending': statusClass = 'status-pending'; break;
+                case 'in-progress': statusClass = 'status-in-progress'; break;
+                case 'resolved': statusClass = 'status-resolved'; break;
+            }
+            
+            issueElement.innerHTML = `
+                <div class="issue-header">
+                    <div class="issue-title">${issue.title}</div>
+                    <div class="issue-status ${statusClass}">${issue.status.replace('-', ' ')}</div>
+                </div>
+                <div class="issue-meta">
+                    <span>Category: ${issue.category}</span>
+                    <span>Priority: ${issue.priority}</span>
+                    <span>Date: ${issue.date}</span>
+                </div>
+                <p>${issue.description}</p>
+                <div class="issue-meta">
+                    <span>Location: ${issue.location}</span>
+                </div>
+                ${state.currentRole === 'politician' || state.currentRole === 'admin' || state.currentRole === 'moderator' ? 
+                    `<div class="issue-actions">
+                        <button class="btn btn-success" data-id="${issue.id}" data-action="resolve">Mark Resolved</button>
+                        <button class="btn btn-warning" data-id="${issue.id}" data-action="progress">Mark In Progress</button>
+                    </div>` : ''}
+            `;
+            
+            // Add event listeners for action buttons
+            if (state.currentRole === 'politician' || state.currentRole === 'admin' || state.currentRole === 'moderator') {
+                const resolveBtn = issueElement.querySelector('[data-action="resolve"]');
+                const progressBtn = issueElement.querySelector('[data-action="progress"]');
+                
+                if (resolveBtn) {
+                    resolveBtn.addEventListener('click', () => {
+                        updateIssueStatus(issue.id, 'resolved');
+                    });
+                }
+                
+                if (progressBtn) {
+                    progressBtn.addEventListener('click', () => {
+                        updateIssueStatus(issue.id, 'in-progress');
+                    });
+                }
+            }
+            
+            return issueElement;
+        }
+
+        // Create feedback element
+        function createFeedbackElement(feedback) {
+            const feedbackElement = document.createElement('div');
+            feedbackElement.className = 'issue-item';
+            
+            feedbackElement.innerHTML = `
+                <div class="issue-header">
+                    <div class="issue-title">${feedback.subject}</div>
+                    <div class="issue-status">${feedback.type}</div>
+                </div>
+                <div class="issue-meta">
+                    <span>Recipient: ${feedback.recipient || 'General'}</span>
+                    <span>Date: ${feedback.date}</span>
+                </div>
+                <p>${feedback.message}</p>
+            `;
+            
+            return feedbackElement;
+        }
+
+        // Create update element
+        function createUpdateElement(update) {
+            const updateElement = document.createElement('div');
+            updateElement.className = 'issue-item';
+            
+            updateElement.innerHTML = `
+                <div class="issue-header">
+                    <div class="issue-title">${update.title}</div>
+                </div>
+                <div class="issue-meta">
+                    <span>Author: ${update.author}</span>
+                    <span>Date: ${update.date}</span>
+                </div>
+                <p>${update.content}</p>
+                ${state.currentRole === 'politician' ? 
+                    `<div class="issue-actions">
+                        <button class="btn btn-warning" data-id="${update.id}" data-action="edit-update">Edit</button>
+                        <button class="btn btn-danger" data-id="${update.id}" data-action="delete-update">Delete</button>
+                    </div>` : ''}
+            `;
+            
+            return updateElement;
+        }
+
+        // Create discussion element
+        function createDiscussionElement(discussion) {
+            const discussionElement = document.createElement('div');
+            discussionElement.className = 'issue-item';
+            
+            let repliesHTML = '';
+            if (discussion.replies && discussion.replies.length > 0) {
+                repliesHTML = '<div class="discussion-replies" style="margin-top: 1rem; padding-left: 1rem; border-left: 2px solid #eee;">';
+                discussion.replies.forEach(reply => {
+                    repliesHTML += `
+                        <div class="reply" style="margin-bottom: 1rem;">
+                            <div style="font-weight: 600;">${reply.user}</div>
+                            <div style="font-size: 0.9rem; color: #666;">${reply.date}</div>
+                            <p>${reply.content}</p>
+                        </div>
+                    `;
+                });
+                repliesHTML += '</div>';
+            }
+            
+            discussionElement.innerHTML = `
+                <div class="issue-header">
+                    <div class="issue-title">${discussion.topic}</div>
+                </div>
+                <div class="issue-meta">
+                    <span>Started by: ${discussion.user}</span>
+                    <span>Date: ${discussion.date}</span>
+                </div>
+                <p>${discussion.content}</p>
+                ${repliesHTML}
+                ${state.currentUser ? 
+                    `<div class="issue-actions">
+                        <button class="btn" data-id="${discussion.id}" data-action="reply">Reply</button>
+                    </div>` : ''}
+            `;
+            
+            return discussionElement;
+        }
+
+        // Update issue status
+        function updateIssueStatus(issueId, status) {
+            const issue = state.issues.find(issue => issue.id === issueId);
+            if (issue) {
+                issue.status = status;
+                updateUI();
+            }
+        }
+
+        // Show specific page
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+                if (page.id === pageId) {
+                    page.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
